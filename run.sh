@@ -9,5 +9,5 @@ fi
 if [ "${SCHEDULE}" = "**None**" ]; then
   sh backup.sh
 else
-  exec go-cron "$SCHEDULE" /bin/sh backup.sh
+  exec go-cron -p 1880 "$SCHEDULE" /bin/sh backup.sh
 fi
