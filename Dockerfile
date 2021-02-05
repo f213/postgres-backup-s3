@@ -22,4 +22,5 @@ ENV SCHEDULE **None**
 ADD run.sh run.sh
 ADD backup.sh backup.sh
 
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["sh", "run.sh"]
