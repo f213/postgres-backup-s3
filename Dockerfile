@@ -1,8 +1,10 @@
-FROM alpine:3.12
+FROM alpine:3.13
 LABEL maintainer="Fedor Borshev <fedor@borshev.com>"
 
-ADD install.sh install.sh
-RUN sh install.sh && rm install.sh
+RUN apk update \
+    && apk --no-cache add dumb-init postgresql-client curl aws-cli
+
+RUN curl -L https://github.com/odise/go-cron/releases/download/v0.0.7/go-cron-linux.gz | zcat > /usr/local/bin/go-cron && chmod +x /usr/local/bin/go-cron
 
 ENV POSTGRES_DATABASE **None**
 ENV POSTGRES_HOST **None**
@@ -19,8 +21,8 @@ ENV S3_ENDPOINT **None**
 ENV S3_S3V4 no
 ENV SCHEDULE **None**
 
-ADD run.sh run.sh
-ADD backup.sh backup.sh
+ADD entrypoint.sh .
+ADD backup.sh .
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-CMD ["sh", "run.sh"]
+CMD ["sh", "entrypoint.sh"]
