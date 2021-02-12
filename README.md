@@ -2,7 +2,7 @@
 
 Backup PostgresSQL to S3 (supports periodic backups)
 
-This is a fork of karser/postgres-backup-s3 with http://healthchecks.io support
+This is a fork of [karser/postgres-backup-s3](https://github.com/karser/docker-images) with http://healthchecks.io support
 
 ## Usage
 
