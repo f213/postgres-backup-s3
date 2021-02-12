@@ -24,7 +24,7 @@ pgbackups3:
   links:
     - postgres
   environment:
-    SCHEDULE: '@daily'
+    SCHEDULE: 0 30 */2 * * *  # every 2 hours at HH:30
     S3_REGION: region
     S3_ACCESS_KEY_ID: key
     S3_SECRET_ACCESS_KEY: secret
