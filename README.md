@@ -19,10 +19,13 @@ postgres:
     POSTGRES_USER: user
     POSTGRES_PASSWORD: password
 
-pgbackups3:
+postgres-backup:
   image: f213/postgres-backup-s3
   links:
     - postgres
+  healthcheck:
+    test: curl http://localhost:1880
+
   environment:
     SCHEDULE: 0 30 */2 * * *  # every 2 hours at HH:30
     S3_REGION: region
@@ -35,6 +38,7 @@ pgbackups3:
     POSTGRES_USER: user
     POSTGRES_PASSWORD: password
     POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
+    HEALTHCHECKS_IO_CHECK_ID: 73968bba-011a-476b-b206-7b113af22e0c
 ```
 
 ### Automatic Periodic Backups
