@@ -1,4 +1,5 @@
 # postgres-backup-s3
+[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/f213/postgres-backup-s3?sort=semver)](https://hub.docker.com/r/f213/postgres-backup-s3) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/f213/postgres-backup-s3/latest)  ![Docker Pulls](https://img.shields.io/docker/pulls/f213/postgres-backup-s3)
 
 Backup PostgresSQL to S3 (supports periodic backups)
 
