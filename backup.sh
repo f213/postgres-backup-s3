@@ -59,13 +59,15 @@ POSTGRES_HOST_OPTS="-h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER $POSTG
 
 echo "Creating dump of ${POSTGRES_DATABASE} database from ${POSTGRES_HOST}..."
 
-pg_dump $POSTGRES_HOST_OPTS $POSTGRES_DATABASE | gzip > dump.sql.gz
+pg_dump -Fc $POSTGRES_HOST_OPTS $POSTGRES_DATABASE > db.dump
 
 echo "Uploading dump to $S3_BUCKET"
 
-cat dump.sql.gz | aws $AWS_ARGS s3 cp - s3://$S3_BUCKET/$S3_PREFIX/${POSTGRES_DATABASE}_$(date +"%Y-%m-%dT%H:%M:%SZ").sql.gz || exit 2
+cat db.dump | aws $AWS_ARGS s3 cp - s3://$S3_BUCKET/$S3_PREFIX/${POSTGRES_DATABASE}_$(date +"%Y-%m-%dT%H:%M:%SZ").dump || exit 2
 
-echo "SQL backup uploaded successfully"
+echo "DB backup uploaded successfully"
+
+rm db.dump
 
 if [ -n $HEALTHCHECKS_IO_CHECK_ID ]; then
     echo "Notifying healthchecks.io"
