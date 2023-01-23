@@ -3,7 +3,7 @@
 
 Backup PostgresSQL to S3 (supports periodic backups)
 
-This is a fork of [karser/postgres-backup-s3](https://github.com/karser/docker-images) with http://healthchecks.io support
+This is a fork of [karser/postgres-backup-s3](https://github.com/karser/docker-images) with webhook support
 
 ## Usage
 
@@ -39,7 +39,7 @@ postgres-backup:
     POSTGRES_USER: user
     POSTGRES_PASSWORD: password
     POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
-    HEALTHCHECKS_IO_CHECK_ID: 73968bba-011a-476b-b206-7b113af22e0c
+    SUCCESS_WEBHOOK: https://sb-ping.ru/8pp9RGwDDPzTL2R8MRb8Ae
 ```
 
 ### Automatic Periodic Backups

@@ -69,7 +69,7 @@ echo "DB backup uploaded successfully"
 
 rm db.dump
 
-if [ -n $HEALTHCHECKS_IO_CHECK_ID ]; then
-    echo "Notifying healthchecks.io"
-    curl -m 10 --retry 5 https://hc-ping.com/$HEALTHCHECKS_IO_CHECK_ID
+if [ -n $SUCCESS_WEBHOOK ]; then
+    echo "Notifying $SUCCESS_WEBHOOK"
+    curl -m 10 --retry 5 $SUCCESS_WEBHOOK
 fi
