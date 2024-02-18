@@ -1,4 +1,4 @@
-FROM alpine:3.16.3
+FROM alpine:3.19.1
 LABEL maintainer="Fedor Borshev <fedor@borshev.com>"
 
 RUN apk update \
