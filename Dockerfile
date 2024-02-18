@@ -2,9 +2,8 @@ FROM alpine:3.19.1
 LABEL maintainer="Fedor Borshev <fedor@borshev.com>"
 
 RUN apk update \
-    && apk --no-cache add dumb-init postgresql-client curl aws-cli
+    && apk --no-cache add dumb-init postgresql-client curl aws-cli supercronic
 
-RUN curl -L https://github.com/odise/go-cron/releases/download/v0.0.7/go-cron-linux.gz | zcat > /usr/local/bin/go-cron && chmod +x /usr/local/bin/go-cron
 
 ENV POSTGRES_DATABASE **None**
 ENV POSTGRES_HOST **None**
@@ -23,6 +22,8 @@ ENV SCHEDULE **None**
 
 ADD entrypoint.sh .
 ADD backup.sh .
+
+HEALTHCHECK CMD curl --fail http://localhost:9746/health || exit 1
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["sh", "entrypoint.sh"]
