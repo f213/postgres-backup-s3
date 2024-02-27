@@ -13,4 +13,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Lint
-        run: shellcheck *.sh
+        run: make lint
