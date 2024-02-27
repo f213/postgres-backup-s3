@@ -1,6 +1,7 @@
 #! /bin/sh
 
 # shellcheck disable=SC3040  # expecting 'pipefail' derrictive is availabe in the shell
+# shellcheck disable=SC2086  # POSTGRES_HOST_OPTS and AWS_ARGS should be splitted by spaces intentionally
 
 set -e
 set -o pipefail
@@ -61,11 +62,11 @@ POSTGRES_HOST_OPTS="-h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER $POSTG
 
 echo "Creating dump of $POSTGRES_DATABASE database from $POSTGRES_HOST..."
 
-pg_dump -Fc "$POSTGRES_HOST_OPTS" "$POSTGRES_DATABASE" > db.dump
+pg_dump -Fc $POSTGRES_HOST_OPTS "$POSTGRES_DATABASE" > db.dump
 
 echo "Uploading dump to $S3_BUCKET"
 
-aws "$AWS_ARGS" s3 cp db.dump "s3://$S3_BUCKET/$S3_PREFIX/$POSTGRES_DATABASE_$(date +"%Y-%m-%dT%H:%M:%SZ").dump" || exit 2
+aws $AWS_ARGS s3 cp db.dump "s3://$S3_BUCKET/$S3_PREFIX/${POSTGRES_DATABASE}_$(date +"%Y-%m-%dT%H:%M:%SZ").dump" || exit 2
 
 echo "DB backup uploaded successfully"
 
