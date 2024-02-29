@@ -9,7 +9,7 @@ This is a fork of [karser/postgres-backup-s3](https://github.com/karser/docker-i
 
 Docker:
 ```sh
-$ docker run -e S3_ACCESS_KEY_ID=key -e S3_SECRET_ACCESS_KEY=secret -e S3_BUCKET=my-bucket -e S3_PREFIX=backup -e POSTGRES_DATABASE=dbname -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_HOST=localhost f213/postgres-backup-s3
+$ docker run -e S3_ACCESS_KEY_ID=key -e S3_SECRET_ACCESS_KEY=secret -e S3_BUCKET=my-bucket -e S3_PREFIX=backup -e POSTGRES_DATABASE=dbname -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_HOST=localhost -e SCHEDULE="@daily" f213/postgres-backup-s3
 ```
 
 Docker Compose:
@@ -28,7 +28,7 @@ postgres-backup:
     test: curl http://localhost:1880
 
   environment:
-    SCHEDULE: 0 30 */2 * * *  # every 2 hours at HH:30
+    SCHEDULE: 0 30 */2 * * * *  # every 2 hours at HH:30
     S3_REGION: region
     S3_ACCESS_KEY_ID: key
     S3_SECRET_ACCESS_KEY: secret
@@ -42,8 +42,6 @@ postgres-backup:
     SUCCESS_WEBHOOK: https://sb-ping.ru/8pp9RGwDDPzTL2R8MRb8Ae
 ```
 
-### Automatic Periodic Backups
+### Crontab format
 
-You can additionally set the `SCHEDULE` environment variable like `-e SCHEDULE="@daily"` to run the backup automatically.
-
-More information about the scheduling can be found [here](http://godoc.org/github.com/robfig/cron#hdr-Predefined_schedules).
+Schedule format with years support. More information about the scheduling can be found [here](https://github.com/aptible/supercronic/tree/master?tab=readme-ov-file#crontab-format)

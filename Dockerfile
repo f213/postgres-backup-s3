@@ -19,6 +19,7 @@ ENV S3_PATH 'backup'
 ENV S3_ENDPOINT **None**
 ENV S3_S3V4 no
 ENV SCHEDULE **None**
+ENV SUCCESS_WEBHOOK **None**
 
 ADD entrypoint.sh .
 ADD backup.sh .
