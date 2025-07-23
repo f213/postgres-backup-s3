@@ -1,35 +1,38 @@
-name: Build dev and Push dev Docker Image
-
+name: Release
 on:
-  push:
-    branches-ignore:
-    - 'main'
+  release:
+    types: [published]
 
 jobs:
   build:
-    runs-on: ubuntu-latest  
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Extract branch variable
-      run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Checkout repository
-      uses: actions/checkout@v3  
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-    - name: Log in to GitHub Container Registry
-      uses: docker/login-action@v2  
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3  
-    
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v5  
-      with:
-        context: .  
-        file: ./Dockerfile  
-        push: true  
-        tags: ghcr.io/wirenboard/postgres-backup-s3:${{ env.BRANCH }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Generate image identifier
+        id: name
+        uses: ASzc/change-string-case-action@v5
+        with:
+          string: ${{ github.repository }}
+
+      - name: Build
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ steps.name.outputs.lowercase }}:latest
+            ${{ steps.name.outputs.lowercase }}:${{ github.event.release.name }}
+          platforms: linux/amd64,linux/arm64
