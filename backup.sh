@@ -64,8 +64,8 @@ POSTGRES_HOST_OPTS="-h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U ${POSTGRES_USER} 
 NOW_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # вычисляем дату "вчера" и "завтра" c помощью TZ (хак для busybox date)
-YESTERDAY_DATE=$(TZ=GMT+24 date -u +%Y-%m-%d)
-TOMORROW_DATE=$(TZ=GMT-24 date -u +%Y-%m-%d)
+YESTERDAY_DATE=$(TZ=GMT+24 date +%Y-%m-%d)
+TOMORROW_DATE=$(TZ=GMT-24 date +%Y-%m-%d)
 NEXT_DAY_OF_MONTH=$(echo "$TOMORROW_DATE" | cut -d- -f3)
 
 echo "Creating dump of ${POSTGRES_DATABASE} database from ${POSTGRES_HOST}..."
