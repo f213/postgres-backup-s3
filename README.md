@@ -9,7 +9,7 @@ This is a fork of [karser/postgres-backup-s3](https://github.com/karser/docker-i
 
 Docker:
 ```sh
-$ docker run -e S3_ACCESS_KEY_ID=key -e S3_SECRET_ACCESS_KEY=secret -e S3_BUCKET=my-bucket -e S3_PREFIX=backup -e POSTGRES_DATABASE=dbname -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_HOST=localhost -e SCHEDULE="@daily" f213/postgres-backup-s3
+$ docker run -e S3_ACCESS_KEY_ID=key -e S3_SECRET_ACCESS_KEY=secret -e S3_BUCKET=my-bucket -e S3_PREFIX=backup -e POSTGRES_DATABASE=dbname -e POSTGRES_USER=user -e POSTGRES_PASSWORD=password -e POSTGRES_HOST=localhost -e SCHEDULE="@daily" f213/postgres-backup-s3:1.3.0-pg16
 ```
 
 Docker Compose:
@@ -41,6 +41,9 @@ postgres-backup:
     POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
     SUCCESS_WEBHOOK: https://sb-ping.ru/8pp9RGwDDPzTL2R8MRb8Ae
 ```
+
+### Choose the right version
+We publish multiple builds targeting specific PostgreSQL versions (now its 15, 16, and 17). While you can always use the latest version, it's recommended to choose the build that matches your server's PostgreSQL version. This prevents compatibility issues where you might create a backup that can't be restored on your current server. For example, if you're running PostgreSQL 15, use tag `1.3.0-pg15` instead of `1.3.0` or `latest`.
 
 ### Crontab format
 
