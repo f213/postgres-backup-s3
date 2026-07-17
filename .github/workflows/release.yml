@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        postgres_version: [15, 16, 17]
+        postgres_version: [16, 17, 18]
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -74,7 +74,7 @@ jobs:
         with:
           push: true
           build-args: |
-            POSTGRES_VERSION=17
+            POSTGRES_VERSION=18
           tags: |
             ${{ steps.name.outputs.lowercase }}:latest
           platforms: linux/amd64,linux/arm64

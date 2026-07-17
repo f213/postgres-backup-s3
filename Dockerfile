@@ -1,7 +1,7 @@
-FROM alpine:3.22.1
+FROM alpine:3.24.1
 LABEL maintainer="Fedor Borshev <fedor@borshev.com>"
 
-ARG POSTGRES_VERSION=17
+ARG POSTGRES_VERSION=18
 
 RUN apk update \
     && apk --no-cache add dumb-init postgresql${POSTGRES_VERSION}-client curl aws-cli supercronic
