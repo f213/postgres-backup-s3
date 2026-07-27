@@ -52,6 +52,11 @@ else
   AWS_ARGS="--endpoint-url ${S3_ENDPOINT}"
 fi
 
+# Buckets with object lock (WORM, compliance lock) may reject
+# CompleteMultipartUpload, so upload the dump in a single request whenever it is
+# small enough. Dumps above the threshold still fall back to a multipart upload.
+aws configure set default.s3.multipart_threshold "${S3_MULTIPART_THRESHOLD:-5GB}"
+
 # env vars needed for aws tools
 export AWS_ACCESS_KEY_ID="${S3_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${S3_SECRET_ACCESS_KEY}"
