@@ -42,6 +42,17 @@ postgres-backup:
     SUCCESS_WEBHOOK: https://sb-ping.ru/8pp9RGwDDPzTL2R8MRb8Ae
 ```
 
+### Buckets with object lock (WORM / compliance lock)
+
+Some S3 implementations reject `CompleteMultipartUpload` with `AccessDenied` once object lock is enabled on the bucket — completing a multipart upload has to clean up the uploaded parts, and the lock forbids that. To stay clear of it, the dump is uploaded in a single request unless it is larger than `S3_MULTIPART_THRESHOLD` (`5GB` by default, the maximum size of a single S3 upload). Set it to a lower value (e.g. `8MB`, the AWS CLI default) to get the usual multipart behaviour back:
+
+```yaml
+environment:
+  S3_MULTIPART_THRESHOLD: 8MB
+```
+
+Also make sure `S3_REGION` matches the region of your bucket: with a wrong region every upload wastes a round-trip on an `AuthorizationHeaderMalformed` error before the AWS CLI retries with the right one.
+
 ### Choose the right version
 We publish multiple builds targeting specific PostgreSQL versions (now its 16, 17 and 18). While you can always use the latest version, it's recommended to choose the build that matches your server's PostgreSQL version. This prevents compatibility issues where you might create a backup that can't be restored on your current server. For example, if you're running PostgreSQL 16, use tag `1.4.0-pg16` instead of `1.4.0` or `latest`.
 
